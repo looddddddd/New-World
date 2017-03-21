@@ -2,13 +2,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public static class GM 
+public class GM 
 {
-    public static BmobUnity bmob;
+    private static GM instance;
+    public static GM Instance
+    {
+        get 
+        {
+            if (instance == null) instance = new GM();
+            return instance; 
+        }
+    }
 
-    public static void BmobStart()
+
+
+    public BmobUnity bmob;
+
+    public void BmobStart()
     {
         bmob = GameObject.FindGameObjectWithTag("BmobUnity").GetComponent<BmobUnity>();
+    }
+    public void StartLogin()
+    {
+        SceneManager.LoadScene("Login");
+    }
+    public void StartMain()
+    {
+        SceneManager.LoadScene("Main");
     }
 }

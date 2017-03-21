@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoginSceneMediator : MonoBehaviour
+public class LoginSceneMediator : BaseSceneMediator
 {
-    void Awake()
+    protected override void OnStart()
     {
-        GM.BmobStart();
+        base.OnStart();
+        GM.Instance.BmobStart();
+        DontDestroyOnLoad(GameObject.FindGameObjectWithTag("BmobUnity"));
     }
 }
