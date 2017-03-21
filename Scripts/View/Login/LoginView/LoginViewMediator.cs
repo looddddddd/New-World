@@ -17,6 +17,9 @@ public class LoginViewMediator : BaseViewMediator {
             case "LoginBtn"://登录按钮
                 Login();
                 break;
+            case "TestBtn":
+                Test();
+                break;
         }
     }
     protected override void AddEventListener()
@@ -62,5 +65,9 @@ public class LoginViewMediator : BaseViewMediator {
         if (password.Length <= 0) return;
 
         UserCenterController.Instance.Login(account, password);
+    }
+    void Test()
+    {
+        UserCenterController.Instance.Test();
     }
 }

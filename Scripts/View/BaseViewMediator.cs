@@ -21,6 +21,7 @@ public class BaseViewMediator : BaseMediator
         if (btns.Length == 0) return;
         for (int i = 0; i < btns.Length; i++)
         {
+            if (btns[i] == null) continue;
             string btnName = btns[i].name;
             btns[i].onClick.AddListener(delegate()
             {
@@ -36,6 +37,7 @@ public class BaseViewMediator : BaseMediator
         if (togs.Length == 0) return;
         for (int i = 0; i < togs.Length; i++)
         {
+            if (togs[i] == null) continue;
             string togName = togs[i].name;
             togs[i].onValueChanged.AddListener(delegate(bool isChanged)
             {
