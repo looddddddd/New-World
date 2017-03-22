@@ -1,0 +1,139 @@
+/**
+ * 云端逻辑
+ * @method onRequest
+ * @for 所属类名
+ * @param {参数类型} 参数名   参数说明
+ * @param {object}   request  获取传入的参数 -- post/request.body.parameters(当前项目使用：post) get/request.query.parameters -- JSON.parse(parameters).parame
+ * @param {object}   response 信息回传模块   -- response.send(JSON.stringify({"value": "just string..."})) 必须是一个对象
+ * @param {object}   modules  对象处理的模块 -- 数据库对象(oData)/关联关系对象(oRelation)/云端逻辑对象(oFunctions)/加密对象(oCrypto)
+ * @return {返回值类型} 返回值说明
+ */
+function onRequest(request, response, modules) {
+    //处理对象
+    var data = modules.oData;             //数据库对象
+    var file = modules.oFile;             //文件对象
+    var locaton = modules.oLocation;      //地理位置对象
+    var relation = modules.oRelation;     //关联关系对象
+    var atom = modules.oAtom;             //原子操作对象
+    var batch = modules.oBatch;           //数据批量操作对象
+    var array = modules.oArray;           //数组对象
+    var push = modules.oPush;             //消息推送对象
+    var functions = modules.oFunctions;   //云端逻辑对象
+    var mail = modules.oMail;             //邮件发送对象
+    var http = modules.oHttp;             //HTTP对象
+    var encodeing = modules.oEncodeing;   //字符编码转换对象
+    var event = modules.oEvent;           //事件对象
+    var bql = modules.oBql;               //bql对象
+    var htmlparser = modules.oHtmlparser; //html元素解析对象
+    var crypto = modules.oCrypto;         //加密对象
+    //客服端传入的参数
+    var parameters = JSON.parse(request.body.parameters);
+    var KCEvent = parameters.KCEvent; //请求的事件
+    var parame = parameters.parame; //传入的对象
+    //分类处理
+    switch(KCEvent)
+    {
+        //Base - 基础事件
+        case "Message"://发送消息事件
+            sentMessage(data,parame,response);
+            break;
+        //UserCenter - 用户中心
+        case "Singup"://注册事件
+            userSignUp(data,parame,response);
+            break;
+        case "Login"://登录事件
+            userLogin(data,parame,response);
+            break;
+        //其他
+        case "other":
+            
+            break;
+        //Invalid - 无效的事件
+        default:
+            invalidEvent(data,parame,response);
+            break;
+    }
+}
+/**
+ * 无效的事件
+ * @method invalidEvent
+ * @for 所属类名
+ * @param {参数类型} 参数名   参数说明
+ * @param {object}   data     数据库 
+ * @param {object}   parame   用户传入的对象参数
+ * @param {object}   response 信息回传模块
+ * @return {返回值类型} 返回值说明
+ */ 
+function invalidEvent(data,parame,response)
+{
+    //parame.language 根据语言取得对应的信息 data
+    var res = {"message": "The request is invalid"};
+    response.send(JSON.stringify(res));
+}
+/**
+ * 发送普通消息
+ * @method sentMessage
+ * @for 所属类名
+ * @param {参数类型} 参数名   参数说明
+ * @param {object}   data     数据库 
+ * @param {object}   parame   用户传入的对象参数
+ * @param {object}   response 信息回传模块
+ * @return {返回值类型} 返回值说明
+ */ 
+function sentMessage(data,parame,response)
+{
+    //根据parame.messageId从data数据中取出对应的数据
+    var res = {"message": "This is a test message"};
+    response.send(JSON.stringify(res));
+}
+/**
+ * 用户注册
+ * @method userSignUp
+ * @for 所属类名
+ * @param {参数类型} 参数名   参数说明
+ * @param {object}   data     数据库 
+ * @param {object}   parame   用户传入的对象参数
+ * @param {object}   response 信息回传模块
+ * @return {返回值类型} 返回值说明
+ */ 
+function userSignUp(data,parame,response)
+{
+    data.userSignUp({
+        "data":parame
+    },function(err, data){
+        response.send(data);
+    });
+}
+/**
+ * 用户登录
+ * @method userLogin
+ * @for 所属类名
+ * @param {参数类型} 参数名   参数说明
+ * @param {object}   data     数据库 
+ * @param {object}   parame   用户传入的对象参数
+ * @param {object}   response 信息回传模块
+ * @return {返回值类型} 返回值说明
+ */ 
+function userLogin(data,parame,response)
+{
+    data.userLogin({
+        "username":parame.username,//登录用户名
+        "password":parame.password//用户密码
+    },function(err,data){//回调函数
+        response.send(data);
+    });
+}
+/**
+ * 方法说明
+ * @method 方法名
+ * @for 所属类名
+ * @param {参数类型} 参数名   参数说明
+ * @param {object}   data     数据库 
+ * @param {object}   parame   用户传入的对象参数
+ * @param {object}   response 信息回传模块
+ * @return {返回值类型} 返回值说明
+ */ 
+function functionName(data,parame,response)
+{
+    
+}

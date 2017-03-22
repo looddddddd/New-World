@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Parameters
 {
-    public static string cloudLogic = "cloudLogic";
+
+    public static string parameters 
+    {
+        get{return "parameters";}
+    }
     public string KCEvent { get; set; }
     public object parame { get; set; }
 
@@ -17,7 +21,7 @@ public class Parameters
     public static Dictionary<string, object> GetParameteres(KCEvent KCEvent, object parame)
     {
         Dictionary<string, object> ps = new Dictionary<string, object>();
-        ps.Add("parameters", new Parameters(KCEvent, parame));
+        ps.Add(parameters, new Parameters(KCEvent, parame));
         return ps;
     }
 }

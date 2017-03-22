@@ -17,9 +17,6 @@ public class LoginViewMediator : BaseViewMediator {
             case "LoginBtn"://登录按钮
                 Login();
                 break;
-            case "TestBtn":
-                Test();
-                break;
         }
     }
     protected override void AddEventListener()
@@ -33,7 +30,7 @@ public class LoginViewMediator : BaseViewMediator {
         NotiCenter.Instance.AddEventListener(KCEvent.Login, delegate(object data)
         {
             UserCenter user = (UserCenter)data;
-            Debug.Log("登录成功:life:" + user.life);
+            Debug.Log("登录成功:username:" + user.username);
         });
     }
     ///注册
@@ -50,8 +47,6 @@ public class LoginViewMediator : BaseViewMediator {
         UserCenter user = new UserCenter();
         user.username = account;
         user.password = password;
-        user.life = 10;
-        user.attack = 20;
         UserCenterController.Instance.Singup(user);
     }
     /// <summary>
@@ -64,10 +59,9 @@ public class LoginViewMediator : BaseViewMediator {
         if (account.Length <= 0) return;
         if (password.Length <= 0) return;
 
-        UserCenterController.Instance.Login(account, password);
-    }
-    void Test()
-    {
-        UserCenterController.Instance.Test();
+        UserCenter user = new UserCenter();
+        user.username = account;
+        user.password = password;
+        UserCenterController.Instance.Login(user);
     }
 }

@@ -5,6 +5,10 @@ public enum KCEvent
 {
     #region 用户中心事件
     /// <summary>
+    /// 发送消息
+    /// </summary>
+    Message,
+    /// <summary>
     /// 注册成功
     /// </summary>
     Singup,
@@ -12,6 +16,14 @@ public enum KCEvent
     /// 登录成功
     /// </summary>
     Login,
+    /// <summary>
+    /// 重置密码
+    /// </summary>
+    RestPassword,
+    /// <summary>
+    /// 邮箱验证
+    /// </summary>
+    EmailVerify,
     #endregion
 }
 /// <summary>
