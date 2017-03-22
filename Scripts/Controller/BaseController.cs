@@ -21,16 +21,24 @@ public class BaseController<T> where T : new ()
     /// <summary>
     /// 是否打印输出
     /// </summary>
-    bool isDebug = true;
+    bool isDebug = false;
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <typeparam name="TBmobTable">表的数据类</typeparam>
+    /// <param name="ps">请求的参数</param>
+    /// <param name="cb">完成请求的回调</param>
     protected void Request<TBmobTable>(Dictionary<string, object> ps, Action<TBmobTable> cb)
     {
         GM.Instance.bmob.Endpoint<JsonObject>(cloudLogic, ps, (resp, exception) =>
         {
+            //网络异常检测
             if (exception != null)
             {
                 Debug.Log("调用失败, 失败原因为： " + exception.Message); // 没有网络时返回的信息   --   调用失败, 失败原因为： Could not resolve host: api.bmob.cn, and response content is 
                 return;
             }
+            //打印数据
             if (isDebug)
             {
                 Parameters parameters = ps[Parameters.parameters] as Parameters;
@@ -42,20 +50,19 @@ public class BaseController<T> where T : new ()
                 }
                 Debug.Log("结束打印云端逻辑返回数据:" + parameters.KCEvent);
             }
-
-            TBmobTable data = SimpleJson.SimpleJson.DeserializeObject<TBmobTable>(resp.data.ToString());//TODO -- 登录的时候报错 failed to convert parameters
-            cb(data);
+            //数据异常检测-code,error
+            Exception err = SimpleJson.SimpleJson.DeserializeObject<Exception>(resp.data.ToString());
+            if (err.code != 0 && !String.IsNullOrEmpty(err.error))//Bmob官方定义的数据异常
+            {
+                Debug.Log("请求失败, 失败原因为： " + err.error);
+                return;
+            }
+            if (!String.IsNullOrEmpty(err.message))//发送自定义消息
+            {
+                Debug.Log("收到一条新的消息:" + err.message);
+                return;
+            }
+            cb(SimpleJson.SimpleJson.DeserializeObject<TBmobTable>(resp.data.ToString()));
         });
-    }
-    /// <summary>
-    /// 是否请求成功
-    /// </summary>
-    /// <param name="code">0 - 代表请求成功</param>
-    /// <param name="error">"" - 空代表请求成功</param>
-    /// <returns></returns>
-    protected bool isSuccess(int code, string error = "")
-    {
-        if (code == 0 && error == "") return true;
-        return false;
     }
 }

@@ -24,12 +24,12 @@ public class LoginViewMediator : BaseViewMediator {
         base.AddEventListener();
         NotiCenter.Instance.AddEventListener(KCEvent.Singup, delegate(object data) 
         {
-            UserCenter user = (UserCenter)data;
+            BmobUser user = (BmobUser)data;
             Debug.Log("注册成功:username:" + user.username);
         });
         NotiCenter.Instance.AddEventListener(KCEvent.Login, delegate(object data)
         {
-            UserCenter user = (UserCenter)data;
+            BmobUser user = (BmobUser)data;
             Debug.Log("登录成功:username:" + user.username);
         });
     }
@@ -41,13 +41,15 @@ public class LoginViewMediator : BaseViewMediator {
     {
         string account = accountInput.text;
         string password = passwordInptut.text;
+        string email = "448020164@qq.com";
         if (account.Length <= 0) return;
         if (password.Length <= 0) return;
 
-        UserCenter user = new UserCenter();
+        BmobUser user = new BmobUser();
         user.username = account;
         user.password = password;
-        UserCenterController.Instance.Singup(user);
+        user.email = email;
+        UserCenterController.Instance.UserCenter(user,KCEvent.Singup);
     }
     /// <summary>
     /// 登录
@@ -59,9 +61,33 @@ public class LoginViewMediator : BaseViewMediator {
         if (account.Length <= 0) return;
         if (password.Length <= 0) return;
 
-        UserCenter user = new UserCenter();
+        BmobUser user = new BmobUser();
         user.username = account;
         user.password = password;
-        UserCenterController.Instance.Login(user);
+        UserCenterController.Instance.UserCenter(user,KCEvent.Login);
+    }
+    /// <summary>
+    /// 重置密码
+    /// </summary>
+    void RestPassword()
+    {
+        string email = "448020164@qq.com";
+        if (email.Length <= 0) return;
+
+        BmobUser user = new BmobUser();
+        user.email = email;
+        UserCenterController.Instance.UserCenter(user, KCEvent.RestPassword);
+    }
+    /// <summary>
+    /// 邮箱验证
+    /// </summary>
+    void EmailVerify()
+    {
+        string email = "448020164@qq.com";
+        if (email.Length <= 0) return;
+
+        BmobUser user = new BmobUser();
+        user.email = email;
+        UserCenterController.Instance.UserCenter(user, KCEvent.EmailVerify);
     }
 }

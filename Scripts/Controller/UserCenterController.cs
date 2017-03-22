@@ -11,37 +11,16 @@ using SimpleJson;
 public class UserCenterController : BaseController<UserCenterController>
 {
     /// <summary>
-    /// 注册
+    /// 用户中心
     /// </summary>
-    /// <param name="accout"></param>
-    /// <param name="password"></param>
-    public void Singup(UserCenter user)
+    /// <typeparam name="T"></typeparam>
+    /// <param name="table">表数据类</param>
+    /// <param name="_KCEvent">触发的事件</param>
+    public void UserCenter<T>(T table, KCEvent _KCEvent)
     {
-        Request<UserCenter>(Parameters.GetParameteres(KCEvent.Singup, user), (data) =>
+        Request<T>(Parameters.GetParameteres(_KCEvent, table), (data) =>
         {
-            if (isSuccess(data.code)) 
-            {
-                NotiCenter.Instance.DispatchEvent(KCEvent.Singup, data);
-                return;
-            }
-            Debug.Log("注册失败,失败原因。 code：" + data.code + "  error：" + data.error);
-        });
-    }
-    /// <summary>
-    /// 登录
-    /// </summary>
-    /// <param name="accout"></param>
-    /// <param name="password"></param>
-    public void Login(UserCenter user)
-    {
-        Request<UserCenter>(Parameters.GetParameteres(KCEvent.Login, user), (data) =>
-        {
-            if (isSuccess(data.code)) 
-            {
-                NotiCenter.Instance.DispatchEvent(KCEvent.Login, data);
-                return;
-            }
-            Debug.Log("登录失败,失败原因。 code：" + data.code + "  error：" + data.error);
+            NotiCenter.Instance.DispatchEvent(_KCEvent, data);
         });
     }
 }

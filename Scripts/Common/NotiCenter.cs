@@ -25,6 +25,11 @@ public enum KCEvent
     /// </summary>
     EmailVerify,
     #endregion
+
+    /// <summary>
+    /// 无效的
+    /// </summary>
+    Invalid,
 }
 /// <summary>
 /// 消息回调

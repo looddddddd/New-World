@@ -12,4 +12,8 @@ public class Exception : BmobTable
     /// 错误信息
     /// </summary>
     public string error { get; set; }
+    /// <summary>
+    /// 消息
+    /// </summary>
+    public string message { get; set; }
 }
