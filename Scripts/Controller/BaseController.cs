@@ -17,11 +17,11 @@ public class BaseController<T> where T : new ()
     /// <summary>
     /// 云端逻辑方法名
     /// </summary>
-    string cloudLogic = "cloudLogic";
+    string cloudLogic = "cloudLogicTest";
     /// <summary>
     /// 是否打印输出
     /// </summary>
-    bool isDebug = false;
+    bool isDebug = true;
     /// <summary>
     /// 请求数据
     /// </summary>
@@ -59,10 +59,29 @@ public class BaseController<T> where T : new ()
             }
             if (!String.IsNullOrEmpty(err.message))//发送自定义消息
             {
-                Debug.Log("收到一条新的消息:" + err.message);
+                HandleMessageEvent(err.message);
                 return;
             }
             cb(SimpleJson.SimpleJson.DeserializeObject<TBmobTable>(resp.data.ToString()));
         });
+    }
+    /// <summary>
+    /// 处理消息事件
+    /// </summary>
+    void HandleMessageEvent(string message)
+    {
+        switch (message)
+        {
+            case "User_Not_Login"://账号在其他地方登陆
+                //退回主界面
+                break;
+            case "User_PassWord_Invalid"://密码失效
+                //退回主界面
+                break;
+            default:
+
+                break;
+        }
+        Debug.Log("收到一条新的消息:" + message);
     }
 }

@@ -62,9 +62,11 @@ public class LoginViewMediator : BaseViewMediator {
         if (password.Length <= 0) return;
 
         BmobUser user = new BmobUser();
+        //TestTable user = new TestTable();
         user.username = account;
         user.password = password;
-        UserCenterController.Instance.UserCenter(user,KCEvent.Login);
+        //user.installationId = "545";
+        UserCenterController.Instance.UserCenter(user, KCEvent.TODO1);
     }
     /// <summary>
     /// 重置密码
@@ -90,4 +92,8 @@ public class LoginViewMediator : BaseViewMediator {
         user.email = email;
         UserCenterController.Instance.UserCenter(user, KCEvent.EmailVerify);
     }
+}
+public class TestTable : BmobUser
+{
+    public string installationId { get; set; }
 }
